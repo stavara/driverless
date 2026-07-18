@@ -1,5 +1,3 @@
-# CarMaker — Índice
-
 Punto de entrada a toda la documentación de CarMaker del equipo: instalación,
 configuración de MATLAB/Simulink, y herramientas propias (telemetría, etc.)
 para el **IPG Driverless Challenge**.
