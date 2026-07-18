@@ -1,38 +1,44 @@
-# Implementación
+# CarMaker — Índice
 
-Documentación técnica del desarrollo de nuestro modelo de conductor autónomo (driver model) para IPG CarMaker / Simulink.
+Punto de entrada a toda la documentación de CarMaker del equipo: instalación,
+configuración de MATLAB/Simulink, y herramientas propias (telemetría, etc.)
+para el **IPG Driverless Challenge**.
 
-## Arquitectura del sistema
+Esta página se actualiza cada vez que se agrega una página nueva — es el
+único lugar que hay que mirar para saber qué documentación existe.
 
-_Diagrama general del lazo de control: percepción → planificación de trayectoria → control lateral/longitudinal → actuación en CarMaker._
+---
 
-## Modelado del vehículo
+## 🔧 Puesta en marcha
 
-- Función de transferencia / espacio de estados utilizado para representar la dinámica del vehículo.
-- Parámetros identificados y su fuente (datasheet del modelo CarMaker, ensayos, etc.).
+Seguir en este orden la primera vez que se configura una PC nueva.
 
-## Lazo de control
+| # | Página | Qué resuelve |
+|---|---|---|
+| 1 | [Instalación de CarMaker](instalacioncarmaker.md) | Registro en el programa Formula CarMaker, instalación de CarMaker/Office, licencia, firewall, MSYS/MinGW, y qué archivos del challenge se descargan aparte |
+| 2 | [MATLAB / Simulink — Configuración](instalacionmatlab.md) | Versión de MATLAB requerida (R2024b), el ajuste obligatorio de `cmenv.m` (14.1 → 14.1.1), y troubleshooting de `cmenv`/`cmlocaldir` |
 
-### Control longitudinal (velocidad)
+---
 
-- Estructura del controlador PID.
-- Estrategia de anti-windup y saturación de actuador.
-- Resultados de sintonización (Kp, Ki, Kd) y criterios usados (sobreimpulso, tiempo de establecimiento, error en régimen permanente).
+## 📊 Herramientas del equipo
 
-### Control lateral (trayectoria)
+Cosas que armamos nosotros, además de lo que instala IPG.
 
-- Enfoque utilizado (Pure Pursuit, Stanley, LQR, etc.).
-- Parámetros y justificación.
+| # | Página | Qué resuelve |
+|---|---|---|
+| 1 | [Telemetría en vivo de CarMaker](telemetrialive.md) | Dashboard en el navegador: datos en vivo, diagrama G-G, pestaña de análisis con selector de canales, medición A/B y exportación a CSV |
 
-## Discretización y solver
+---
 
-- Tipo de solver Simulink utilizado (paso fijo / variable) y su justificación.
-- Tiempo de paso y su relación con los requisitos de tiempo real de CarMaker.
+## 🗺️ Cómo se relacionan
 
-## Validación
+```
+Instalación de CarMaker  →  MATLAB / Simulink — Configuración  →  Telemetría en vivo
+   (una sola vez)              (una sola vez)                      (cada sesión)
+```
 
-- Escenarios de prueba (Autocross, Endurance).
-- Métricas de desempeño registradas.
-
-!!! tip "Edita esta página"
-    Esta estructura está pensada para documentar el trabajo desarrollado siguiendo el flujo de sintonización PID y buenas prácticas de modelado en Simulink. Complétala a medida que avances en el proyecto.
+1. **Instalación** — se hace una vez por PC nueva.
+2. **MATLAB / Simulink** — se hace una vez, pero hay que volver a revisarla
+   si el equipo actualiza de versión de CarMaker o de MATLAB.
+3. **Telemetría en vivo** — es la rutina de cada sesión de trabajo, una vez
+   que lo anterior ya está resuelto.
