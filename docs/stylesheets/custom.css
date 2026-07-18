@@ -1,0 +1,107 @@
+/* ============================================================
+   Paleta: Rojo Carmesí Editorial
+   Sobrescribe las variables de color de mkdocs-material.
+   ============================================================ */
+
+:root {
+  --md-primary-fg-color:             #ffffff;
+  --md-primary-fg-color--light:      #ffffff;
+  --md-primary-fg-color--dark:       #f5f5f5;
+  --md-primary-bg-color:             #111111;
+  --md-primary-bg-color--light:      #111111;
+
+  --md-accent-fg-color:              #B91C1C;
+  --md-accent-fg-color--transparent: #B91C1C1a;
+  --md-accent-bg-color:              #ffffff;
+  --md-accent-bg-color--light:       #ffffff;
+
+  --md-typeset-a-color:              #B91C1C;
+
+  /* Tipografía editorial */
+  --md-text-font: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --md-code-font: "Fira Code", "SFMono-Regular", Consolas, monospace;
+}
+
+/* Encabezados con aire editorial: más espaciados, peso controlado */
+.md-typeset h1 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  border-bottom: 2px solid #B91C1C;
+  padding-bottom: 0.3em;
+}
+
+.md-typeset h2 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2em;
+}
+
+/* Enlaces con subrayado sutil tipo editorial */
+.md-typeset a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.md-typeset a:hover {
+  border-bottom-color: #B91C1C;
+}
+
+/* Header y barra superior: blanco puro, borde inferior fino en rojo */
+.md-header {
+  background-color: #ffffff;
+  color: #111111;
+  box-shadow: none;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.md-header__button.md-logo, .md-header__title, .md-header__topic {
+  color: #111111;
+}
+
+.md-tabs {
+  background-color: #ffffff;
+  border-bottom: 1px solid #eaeaea;
+}
+.md-tabs__link {
+  color: #444444;
+}
+.md-tabs__link--active,
+.md-tabs__link:hover {
+  color: #B91C1C;
+}
+
+/* Botones y admonitions acentuados en carmesí */
+.md-typeset .admonition.note,
+.md-typeset .admonition.tip {
+  border-color: #B91C1C;
+}
+.md-typeset .note > .admonition-title,
+.md-typeset .tip > .admonition-title {
+  background-color: #B91C1C1a;
+}
+.md-typeset .note > .admonition-title::before,
+.md-typeset .tip > .admonition-title::before {
+  background-color: #B91C1C;
+}
+
+/* Botón "Editar" y elementos activos */
+.md-content__button {
+  color: #B91C1C;
+}
+
+/* Minimalismo: reduce sombras y bordes redondeados excesivos */
+.md-typeset table:not([class]) {
+  border-radius: 4px;
+  box-shadow: none;
+  border: 1px solid #eaeaea;
+}
+
+/* Botón de búsqueda */
+.md-search__form {
+  background-color: #f5f5f5;
+}
+
+/* Ancho editorial cómodo para lectura larga */
+.md-grid {
+  max-width: 1160px;
+}

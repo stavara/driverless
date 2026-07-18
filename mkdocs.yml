@@ -1,0 +1,78 @@
+site_name: vFSAA IPG Driverless
+site_description: Equipo de Vehículo Autónomo — Virtual Formula Student Alpe Adria
+site_author: Tu Equipo
+site_url: https://tu-usuario.github.io/tu-repositorio/
+
+repo_name: tu-usuario/tu-repositorio
+repo_url: https://github.com/tu-usuario/tu-repositorio
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: es
+  font:
+    text: Inter
+    code: Fira Code
+  palette:
+    # Modo claro forzado — no se define ninguna paleta "slate" (oscura),
+    # y no se incluye el toggle de tema para bloquear el modo claro.
+    - scheme: default
+      primary: white
+      accent: red
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.action.edit
+    - content.code.copy
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/custom.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+      cache_safe: true
+
+nav:
+  - Inicio: index.md
+  - Nosotros: nosotros.md
+  - Patrocinadores: patrocinadores.md
+  - Implementación: implementacion.md
+  - Investigación: investigacion.md
