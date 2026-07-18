@@ -1,31 +1,25 @@
 # Patrocinadores
 
-Nuestro trabajo no sería posible sin el apoyo de las organizaciones que confían en el proyecto.
+UCJC Racing avanza gracias al apoyo de empresas y organizaciones que creen en
+el proyecto. Esta página reúne a quienes nos acompañan y cómo sumarse.
 
-## Patrocinadores principales
+---
 
-<div class="grid cards" markdown>
+## Nuestros patrocinadores
 
-- **Nombre del patrocinador**
+*(pendiente — completar con logos/nombres de los sponsors actuales)*
 
-    ---
+---
 
-    Breve descripción del apoyo brindado (económico, técnico, licencias de software, etc.)
+## Por qué patrocinar a UCJC Racing
 
-- **Nombre del patrocinador**
+*(pendiente — beneficios para el patrocinador: visibilidad en el auto/livery,
+presencia en redes, acceso a los eventos de Formula Student, etc.)*
 
-    ---
+---
 
-    Breve descripción del apoyo brindado.
+## Contacto
 
-</div>
+¿Tu empresa quiere sumarse como patrocinador? Escribinos a:
 
-## Quieres patrocinarnos
-
-Si tu organización está interesada en apoyar el desarrollo de tecnología de conducción autónoma aplicada a Formula Student, contáctanos.
-
-- **Correo:** equipo@ejemplo.com
-- **Dossier de patrocinio:** _(enlace al PDF)_
-
-!!! tip "Edita esta página"
-    Sustituye los logotipos, nombres y niveles de patrocinio (oro / plata / bronce) según corresponda a tu equipo.
+**ucjcracing@ucjc.edu**
