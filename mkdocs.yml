@@ -7,7 +7,7 @@ theme:
   name: material
   language: es
   icon:
-    logo: material/car-sports
+    logo: material/steering
   font:
     text: Inter
     code: Fira Code
