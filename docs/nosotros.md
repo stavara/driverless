@@ -1,21 +1,40 @@
 # Nosotros
 
-## Quiénes somos
+**UCJC Racing** es el equipo de Formula Student de la Universidad Camilo José
+Cela. Detrás del desarrollo del Driver Model y del resto del stack técnico
+está este equipo:
 
-_Añade aquí la historia y misión de tu equipo: cuándo se fundó, en qué universidad/institución se basa, y qué lo motiva a competir en vFSAA / IPG Driverless._
+---
 
-## El equipo
+## Stavara — Engineering Technical Lead
 
-| Nombre | Rol | Área |
-|---|---|---|
-| Nombre Apellido | Team Captain | Dirección general |
-| Nombre Apellido | Lead Control | Control y dinámica vehicular |
-| Nombre Apellido | Lead Software | Percepción / Software |
+[LinkedIn](https://www.linkedin.com/in/florentinviorel/)
 
-## Nuestra trayectoria
+Lidera técnicamente el proyecto, coordinando el desarrollo del vehículo y la
+integración de los distintos sistemas. Trabaja junto a las áreas mecánica,
+eléctrica y de diseño para que el desarrollo avance de forma coherente entre
+disciplinas, participando en decisiones clave como validación de diseño,
+procedimientos de testing y optimización de rendimiento en condiciones
+reales.
 
-- **2024** — Fundación del equipo.
-- **2025** — Primera participación en vFSAA.
+---
 
-!!! tip "Edita esta página"
-    Reemplaza estos bloques con la información real de tu equipo. Puedes usar `content.action.edit` (ya activado en `mkdocs.yml`) para enlazar directamente al archivo fuente en GitHub.
+## Eva — Presidenta
+
+*(rol a confirmar/ajustar)*
+
+Responsable de la dirección general del equipo: representación institucional,
+coordinación entre áreas y seguimiento de los objetivos del proyecto de
+principio a fin.
+
+---
+
+## Guillermo — Electronics Lead
+
+*(completar bio)*
+
+---
+
+## Alvaro — Team Manager
+
+*(completar bio)*
