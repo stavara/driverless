@@ -68,4 +68,7 @@ nav:
   - Nosotros: nosotros.md
   - Patrocinadores: patrocinadores.md
   - Implementación: implementacion.md
-  - Investigación: investigacion.md
+  - Investigación:
+      - Resumen: investigacion/index.md
+      - Frenos: investigacion/frenos.md
+      - Aceleración: investigacion/aceleracion.md
