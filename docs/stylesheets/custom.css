@@ -70,7 +70,7 @@
   color: #B91C1C;
 }
 
-/* Botones y admonitions acentuados en carmesí */
+/* Admonitions acentuadas en carmesí */
 .md-typeset .admonition.note,
 .md-typeset .admonition.tip {
   border-color: #B91C1C;
@@ -82,11 +82,6 @@
 .md-typeset .note > .admonition-title::before,
 .md-typeset .tip > .admonition-title::before {
   background-color: #B91C1C;
-}
-
-/* Botón "Editar" y elementos activos */
-.md-content__button {
-  color: #B91C1C;
 }
 
 /* Minimalismo: reduce sombras y bordes redondeados excesivos */
@@ -104,4 +99,32 @@
 /* Ancho editorial cómodo para lectura larga */
 .md-grid {
   max-width: 1160px;
+}
+
+/* ============================================================
+   Tabla de contenidos (TOC) y navegación lateral — todo en rojo
+   ============================================================ */
+.md-nav__link:hover,
+.md-nav__link:focus,
+.md-nav__link--active,
+.md-nav__link.md-nav__link--active {
+  color: #B91C1C !important;
+}
+
+.md-nav__link--active > .md-ellipsis {
+  color: #B91C1C !important;
+}
+
+.md-nav__item .md-nav__link--active::before,
+.md-nav__link[data-md-state="active"] {
+  color: #B91C1C !important;
+}
+
+.md-nav__link:hover code,
+.md-nav__link:focus code {
+  color: #B91C1C !important;
+}
+
+.md-nav__title {
+  color: #444444;
 }
