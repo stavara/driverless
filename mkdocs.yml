@@ -71,7 +71,7 @@ nav:
   - Inicio: index.md
   - Implementacion:
       - implementacion/index.md
-      - TelemetriaLive: implementacion/telimetrialive.md
+      - Telemetria: implementacion/telemetrialive.md
   - Investigacion: investigacion.md
   - Nosotros: nosotros.md
   - Patrocinadores: patrocinadores.md
