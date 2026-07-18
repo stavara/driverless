@@ -78,6 +78,7 @@ nav:
       - investigacion/index.md
       - PID Tuning óptimo:
           - investigacion/pid-tuning/index.md
+          - investigacion/pid-tuning/paper.md
   - Nosotros: nosotros.md
   - Patrocinadores: patrocinadores.md
   
