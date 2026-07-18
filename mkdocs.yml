@@ -1,11 +1,13 @@
-site_name: vFSAA IPG Driverless
-site_description: Equipo de Vehículo Autónomo — Virtual Formula Student Alpe Adria
-site_author: Tu Equipo
-site_url: https://tu-usuario.github.io/tu-repositorio/
+site_name: UCJC RACING
+site_description: UCJC RACING — Virtual Formula Student Alpe Adria
+site_author: Stavara
+site_url: https://stavara.github.io/driverless/
 
 theme:
   name: material
   language: es
+  icon:
+    logo: material/car-sports
   font:
     text: Inter
     code: Fira Code
