@@ -130,3 +130,15 @@
 .md-nav__title {
   color: #444444;
 }
+
+/* Botón "volver arriba" — mismo carmesí que el resto del sitio */
+.md-top {
+  background-color: #B91C1C !important;
+  color: #ffffff !important;
+  border: none;
+}
+
+.md-top:hover,
+.md-top:focus {
+  background-color: #991616 !important;
+}
