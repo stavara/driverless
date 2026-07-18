@@ -7,7 +7,7 @@ Esta página se actualiza cada vez que se agrega una página nueva — es el
 
 ---
 
-## 🔧 Puesta en marcha
+## Puesta en marcha
 
 Seguir en este orden la primera vez que se configura una PC nueva.
 
@@ -18,7 +18,7 @@ Seguir en este orden la primera vez que se configura una PC nueva.
 
 ---
 
-## 📊 Herramientas del equipo
+## Herramientas del equipo
 
 Cosas que armamos nosotros, además de lo que instala IPG.
 
@@ -28,7 +28,7 @@ Cosas que armamos nosotros, además de lo que instala IPG.
 
 ---
 
-## 🗺️ Cómo se relacionan
+## Cómo se relacionan
 
 ```
 Instalación de CarMaker  →  MATLAB / Simulink — Configuración  →  Telemetría en vivo
