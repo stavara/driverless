@@ -70,7 +70,7 @@ plugins:
 nav:
   - Inicio: index.md
   - Implementacion:
-      - implementacion/index.md
+      - implementacion/implementacion.md
       - Instalacion Carmaker: implementacion/instalacioncarmaker.md
       - Instalacion Matlab: implementacion/instalacionmatlab.md
       - Telemetria: implementacion/telemetrialive.md
