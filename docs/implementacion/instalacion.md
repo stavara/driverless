@@ -1,8 +1,11 @@
-# Instalación de CarMaker (Formula Student / FSAA)
+# Instalación de CarMaker (IPG Driverless Challenge — Formula Student)
 
-Guía de instalación y licenciamiento de CarMaker/Office para el equipo, basada
-en la documentación oficial de IPG Automotive (`InstallationGuide.pdf`) y el
-tutorial del programa Formula CarMaker (`vFSAA_IPG_CarMaker_Tutorial_1.pdf`).
+Guía de instalación y licenciamiento de **CarMaker/Office** para el equipo,
+enfocada en lo que hace falta específicamente para el **IPG Driverless
+Competition** (control autónomo vía Simulink/CM4SL) — no cubre pasos que no
+aplican a este caso de uso, como IPGKinematics o el setup de sistemas
+Realtime/HIL. Basada en la documentación oficial de IPG Automotive
+(`InstallationGuide.pdf`) y el material del programa Formula CarMaker.
 
 !!! info "Requisito previo"
     Necesitás permisos de **administrador** en la PC donde vayas a instalar.
@@ -15,7 +18,15 @@ tutorial del programa Formula CarMaker (`vFSAA_IPG_CarMaker_Tutorial_1.pdf`).
    [ipg-automotive.com — Formula CarMaker Registration](https://www.ipg-automotive.com/en/company/how-we-are-connected/investing-in-education/research-teaching/registration-formula-carmaker-program/)
 2. Una vez aprobado el sponsorship y solicitadas las licencias, vas a recibir
    un login para el **FCM Customer Area**.
-3. Descargá ahí la última versión de **CarMaker/Office** y de **IPGKinematics**.
+3. Descargá ahí la última versión de **CarMaker/Office**.
+
+!!! success "No hace falta IPGKinematics para el Driverless Challenge"
+    IPGKinematics sirve para modelar la **cinemática y compliance de la
+    suspensión** (K&C) cuando el equipo diseña su propio auto físico. Para el
+    **IPG Driverless Competition**, el vehículo (`IPG_Challenge_Car`) lo
+    provee IPG Automotive ya armado y con sensores — vos solo entregás un
+    modelo Simulink (Driver Model), no tocás nada del auto físico. Así que
+    podés omitir la descarga/instalación de IPGKinematics sin problema.
 
 !!! note "Licencia"
     Cada equipo recibe un archivo de licencia con **dos nodos registrados**
@@ -90,10 +101,15 @@ que estos ejecutables tengan permiso de comunicarse entre sí:
 
 ---
 
-## 5. MSYS (opcional — solo si compilás modelos en C)
+## 5. MSYS (necesario para CM4SL — CarMaker for Simulink)
 
-Si tu equipo va a integrar modelos basados en código C en CarMaker (Office o
-HIL Xpack4), instalá el paquete MSYS-2023 con el mismo IPG Installer:
+A diferencia de IPGKinematics, **este sí lo necesitás**: `CarMaker for
+Simulink` (CM4SL) compila tu modelo Simulink en una S-function para
+co-simular con CarMaker, y ese proceso de compilación requiere un compilador
+de C/C++ configurado en MATLAB. IPG recomienda el toolchain **MSYS/MinGW**
+para Windows.
+
+Instalalo con el mismo IPG Installer:
 
 ```
 msys-2023-<version>.tgz
@@ -105,9 +121,59 @@ Esto:
 - Define la variable de entorno `MSYS_ROOT`.
 - Crea un acceso directo en el menú de inicio, dentro de la carpeta `IPG`.
 
+!!! tip "Verificación en MATLAB"
+    Podés confirmar que MATLAB tiene un compilador configurado corriendo
+    `mex -setup` en el Command Window.
+
 ---
 
-## 6. Verificación final
+## 5.1 Versión de MATLAB
+
+El handbook oficial del Driverless Challenge especifica:
+
+> "Driver model: Implemented in **Simulink R2024b** (MathWorks MATLAB)"
+
+- Necesitás **MATLAB R2024b con Simulink**.
+- Sistema operativo recomendado: **Windows 11** (la evaluación oficial de los
+  modelos se hace ahí, aunque puedas desarrollar en otro OS).
+- La carpeta `CM4SL` de tu instalación de CarMaker tiene subcarpetas por
+  versión de MATLAB (ej. `CM4SL/R2024b/`) — si tenés otra versión de MATLAB,
+  puede que esa subcarpeta no exista y `cmenv` falle.
+
+!!! success "Sobre la versión exacta de CarMaker (14.1 vs 14.1.1)"
+    El handbook menciona "CarMaker 14.1", pero **14.1.1 es totalmente
+    válido** — es un patch/hotfix de la misma serie 14.1, no una versión
+    distinta. De hecho es la que distribuye activamente el instalador
+    oficial de IPG. No hace falta buscar específicamente la 14.1.0.
+
+---
+
+## 6. Archivos específicos del Driverless Challenge
+
+Estos **no vienen con la instalación de CarMaker** — se descargan aparte,
+desde el canal de Discord oficial de la competencia, a partir de la fecha
+indicada en el cronograma:
+
+- **Vehicle File** (`IPG_Challenge_Car`) — el auto ya armado con sensores,
+  provisto por IPG. No se modifica.
+- **Pistas** (`FSAA-AutoX.rd5`, `FSAAII.rd5`) — solo se puede editar la
+  trayectoria (centerline) de referencia.
+- **`DriverModel.slx`** — el modelo Simulink base. Solo se puede modificar el
+  subsistema **Vehicle Control**.
+- **`DriverModelParameters.m`** — parámetros del Driver Model, sin
+  restricciones de edición.
+- **Testruns** (`Autocross_challenge`, `Endurance_challenge`) — no se
+  modifican, son los mismos que usa el servidor de IPG para evaluar.
+
+!!! danger "Toolboxes permitidas en el Driver Model"
+    Para que todos los modelos corran en el servidor de IPG, el Simulink
+    model solo puede usar bloques de: **Simulink, CarMaker4SL (los
+    predefinidos en el DriverModel dado), HDL Coder, Simulink Extras y
+    Stateflow**. Usar otras toolboxes puede descalificar el modelo.
+
+---
+
+## 7. Verificación final
 
 1. Abrí CarMaker desde el acceso directo del menú de inicio.
 2. Si arranca sin el error de licencia, la instalación quedó lista.
@@ -131,4 +197,30 @@ Esto:
     Verificá que el toolchain **MSYS/MinGW** se haya instalado (sección 5) y
     que la variable `MSYS_ROOT` esté definida.
 
----
+!!! failure "`cmenv` da error: \"Unable to find specified CarMaker installation directory\" (busca `win64-14.1` en vez de `win64-14.1.1`)"
+    Esto pasa cuando hay un archivo **`cmlocaldir.m`** viejo (de otro
+    proyecto/plantilla) en tu MATLAB path, que sobreescribe la ruta por
+    defecto de `cmenv.m`. Para solucionarlo:
+
+    1. En MATLAB, corré:
+       ```matlab
+       which cmlocaldir
+       ```
+    2. Abrí ese archivo y corregí la ruta a la carpeta real de tu instalación:
+       ```matlab
+       function d = cmlocaldir
+       d = 'C:/IPG/carmaker/win64-14.1.1';
+       ```
+    3. Guardá y volvé a correr `cmenv`. Si preferís no depender de ese
+       archivo, también podés sacarlo del MATLAB path (click derecho sobre
+       la carpeta que lo contiene → *Remove from Path*), así `cmenv.m` usa
+       su valor por defecto (`14.1.1`), que ya es correcto.
+
+    Cuando funciona, `cmenv` muestra algo así, sin errores:
+    ```
+    CarMaker directory: C:/IPG/carmaker/win64-14.1.1
+    addpath C:/IPG/carmaker/win64-14.1.1/Matlab
+    addpath C:/IPG/carmaker/win64-14.1.1/Matlab/R2024b
+    addpath C:/IPG/carmaker/win64-14.1.1/CM4SL
+    addpath C:/IPG/carmaker/win64-14.1.1/CM4SL/R2024b
+    ```
