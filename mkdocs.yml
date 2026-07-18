@@ -70,5 +70,5 @@ nav:
   - Patrocinadores: patrocinadores.md
   - Investigacion: investigacion.md
   - Implementacion:
-      - Resumen: implementacion/index.md
+      - implementacion/index.md
       - Frenos: implementacion/frenos.md
