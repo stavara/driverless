@@ -98,8 +98,10 @@
 
 /* Ancho editorial cómodo para lectura larga */
 .md-grid {
-  max-width: 1160px;
+  max-width: 92vw;
 }
+
+
 
 /* ============================================================
    Tabla de contenidos (TOC) y navegación lateral — todo en rojo
