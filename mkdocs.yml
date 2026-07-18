@@ -31,6 +31,9 @@ theme:
 extra_css:
   - stylesheets/custom.css
 
+extra_javascript:
+  - javascripts/highlight-fade.js
+
 markdown_extensions:
   - admonition
   - pymdownx.details
