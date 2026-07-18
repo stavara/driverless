@@ -74,7 +74,10 @@ nav:
       - Instalacion Carmaker: implementacion/instalacioncarmaker.md
       - Instalacion Matlab: implementacion/instalacionmatlab.md
       - Telemetria: implementacion/telemetrialive.md
-  - Investigacion: investigacion.md
+  - Investigacion: 
+      - investigacion/index.md
+      - PID Tuning óptimo:
+          - investigacion/pid-tuning/index.md
   - Nosotros: nosotros.md
   - Patrocinadores: patrocinadores.md
   
