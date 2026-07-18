@@ -71,7 +71,8 @@ nav:
   - Inicio: index.md
   - Implementacion:
       - implementacion/index.md
-      - Instalacion Carmaker: implementacion/instalacion.md
+      - Instalacion Carmaker: implementacion/instalacioncarmaker.md
+      - Instalacion Matlab: instalacionmatlab.md
       - Telemetria: implementacion/telemetrialive.md
   - Investigacion: investigacion.md
   - Nosotros: nosotros.md
