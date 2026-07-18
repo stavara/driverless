@@ -96,8 +96,7 @@ que estos ejecutables tengan permiso de comunicarse entre sí:
 !!! tip "Relación con la telemetría en vivo"
     Esta misma lógica de puertos es la razón por la que hay que habilitar
     explícitamente el puerto **16660** para conectar herramientas externas
-    (como nuestro dashboard de telemetría). Ver la página
-    [Telemetría en vivo](carmaker-telemetria.md) para ese setup.
+    (como nuestro dashboard de telemetría).
 
 ---
 
