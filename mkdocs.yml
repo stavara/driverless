@@ -69,9 +69,10 @@ plugins:
 
 nav:
   - Inicio: index.md
-  - Nosotros: nosotros.md
-  - Patrocinadores: patrocinadores.md
-  - Investigacion: investigacion.md
   - Implementacion:
       - implementacion/index.md
-      - Frenos: implementacion/frenos.md
+      - TelemetriaLive: implementacion/telimetrialive.md
+  - Investigacion: investigacion.md
+  - Nosotros: nosotros.md
+  - Patrocinadores: patrocinadores.md
+  
