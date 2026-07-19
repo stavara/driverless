@@ -1,68 +1,81 @@
 # Telemetría en vivo de CarMaker
 
-Dashboard de telemetría en tiempo real para simulaciones de CarMaker (Formula
-Student Driverless), con vista en vivo y una pestaña de análisis con selector
-de canales, medición A/B, diagrama G-G y exportación a CSV.
+App de escritorio para telemetría en tiempo real, cronometraje de
+vueltas/sectores, mapa del track en vivo y análisis — conectada directo por
+TCP a CarMaker, **sin navegador ni servidor intermedio**.
 
-!!! info "Componentes"
-    - **`carmaker_bridge.py`** — se conecta a CarMaker por TCP (puerto 16660)
-      y reenvía las variables por WebSocket.
-    - **`dashboard.html`** — el dashboard que corre en el navegador, servido
-      localmente por HTTP.
+!!! info "Reemplaza a la versión anterior basada en navegador"
+    Esta app (PyQt5 + pyqtgraph) reemplaza al dashboard web
+    (`carmaker_bridge.py` + `dashboard.html` + `http.server`) que usábamos
+    antes. Es un solo programa, más simple de correr y con funciones nuevas
+    (mapa del track, modo demo, persistencia de vueltas entre sesiones).
 
 ---
 
-## 1. Configuración inicial
+## Descargar
 
-Esto se hace **una sola vez** por máquina.
+[Descargar la app de telemetría (.zip)](downloads/carmaker-dashboard.zip)
 
-### 1.1 Dependencias de Python
+!!! warning "Ruta asumida — ajustar si es distinta"
+    Este link asume que subiste el `.zip` a
+    `docs/implementacion/downloads/carmaker-dashboard.zip`. Si le pusiste
+    otro nombre o lo guardaste en otra carpeta, avisame el nombre/ruta real
+    y actualizo el link.
+
+---
+
+## 1. Componentes
+
+Todos estos archivos van **en la misma carpeta**:
+
+| Archivo | Qué hace |
+|---|---|
+| `app.py` | La aplicación en sí (interfaz PyQt5 + gráficos pyqtgraph). Es lo que se ejecuta. |
+| `carmaker_core.py` | Lógica pura de telemetría y cronometraje (máquina de estados esperando/corriendo, detección de vueltas/sectores). Sin dependencias de Qt ni de CarMaker — se puede testear sola. |
+| `carmaker_client.py` | Cliente TCP hacia CarMaker (misma API que usa IPGControl) + un generador de datos sintéticos para modo demo. |
+| `run_app.bat` | Lanzador para Windows: instala dependencias si faltan y corre `app.py`. |
+| `requirements.txt` | Dependencias de Python: PyQt5, pyqtgraph, pycarmaker. |
+| `track_autox_slim.json` / `track_endurance_slim.json` | Trazado y límites de sector de cada pista, extraídos de los `.rd5` del challenge — usados para dibujar el mapa y como respaldo del cronometraje. |
+| `cm_dashboard_state.json` | Estado persistido: vueltas completadas, mejor vuelta. Se autoguarda cada 2 segundos. |
+| `test_carmaker_core.py` | Tests de la lógica de cronometraje con datos sintéticos (no necesita CarMaker corriendo). |
+
+---
+
+## 2. Configuración inicial
+
+### 2.1 Dependencias de Python
+
+`run_app.bat` las instala solo la primera vez. Si preferís hacerlo a mano:
 
 ```powershell
-pip install websockets
-pip install https://github.com/gmnvh/pycarmaker/archive/refs/heads/master.zip
+pip install -r requirements.txt
 ```
 
-!!! warning "Sin Git"
-    Si `pip install git+https://...` falla porque no tenés Git instalado en
-    Windows, usá la URL directa al `.zip` como en el comando de arriba —
-    no hace falta Git para eso.
+(instala PyQt5, pyqtgraph, y pycarmaker desde su repositorio de GitHub)
 
-### 1.2 Habilitar el puerto TCP de CarMaker automáticamente
+### 2.2 Habilitar el puerto TCP de CarMaker
 
-CarMaker no expone el puerto TCP por defecto, ni siquiera si la simulación
-está corriendo. Hay que decirle explícitamente que lo habilite al arrancar.
-
-Abrí tu `cmenv.m` (carpeta `src_cm4sl` del proyecto):
-
-```matlab
-edit cmenv.m
-```
-
-Agregá esta línea al final del archivo y guardá:
+La app se conecta a CarMaker por el mismo puerto TCP que usa IPGControl —
+que **no está habilitado por defecto**. Esto se configura del lado de
+MATLAB, ya documentado en detalle en
+[MATLAB / Simulink — Configuración](instalacionmatlab.md#5-habilitar-acceso-externo-puerto-tcp):
 
 ```matlab
 CMData.GuiArgs = {'-apphost', 'localhost', '-cmdport', '16660'};
 ```
 
-Con esto, cada vez que corrés `cmenv`, CarMaker se abre con el puerto **16660**
-ya habilitado para que `carmaker_bridge.py` se pueda conectar.
+Agregá esa línea al final de tu `cmenv.m` para que se configure sola cada
+sesión — ver el link de arriba para el detalle completo y el troubleshooting
+de esa parte.
 
-!!! tip "Por qué hace falta"
-    `CarMaker for Simulink` (el botón *Open CarMaker GUI*) lanza `CM_Office.exe`
-    sin argumentos extra. La única forma soportada de pasarle flags de arranque
-    (como `-cmdport`) es a través de la variable `CMData.GuiArgs` en MATLAB,
-    definida *antes* de abrir la GUI.
-
-### 1.3 Confirmar los nombres de las variables (quantities)
-
-Los nombres de las señales que lee el dashboard están en `QUANTITY_NAMES`
-dentro de `carmaker_bridge.py`. Si tu proyecto usa otros nombres, revisalos
-en el archivo `OutputQuantities` (Infofile del proyecto) o en IPGControl.
+!!! tip "No hace falta CarMaker corriendo para probar la app"
+    Si el puerto no está disponible (CarMaker cerrado, o el puerto mal
+    configurado), la app arranca igual en **modo demo** con datos
+    sintéticos — ver sección 5.
 
 ---
 
-## 2. Arrancar una sesión
+## 3. Arrancar una sesión
 
 ### Paso 1 — MATLAB (Command Window)
 
@@ -78,107 +91,109 @@ open('DriverModel.slx')
 2. Cargar el TestRun deseado.
 3. Click en **Start**.
 
-### Paso 3 — Puente a CarMaker (PowerShell, terminal 1)
+### Paso 3 — Correr la app
 
-!!! note "Ruta del proyecto"
-    Reemplazá `<ruta-a-tu-carpeta-del-proyecto>` por la carpeta donde tengas
-    guardados `carmaker_bridge.py` y `dashboard.html`.
+Doble click en `run_app.bat`, o desde PowerShell:
 
 ```powershell
-cd "<ruta-a-tu-carpeta-del-proyecto>"
-python carmaker_bridge.py
+python app.py
 ```
 
-Salida esperada:
-
-```
-TCP socket connected
-Conectado a CarMaker y suscripto a N quantities
-Servidor WebSocket escuchando en ws://localhost:8765
-```
-
-### Paso 4 — Servidor del dashboard (PowerShell, terminal 2)
-
-```powershell
-cd "<ruta-a-tu-carpeta-del-proyecto>"
-python -m http.server 8000
-```
-
-### Paso 5 — Navegador
-
-```
-http://localhost:8000/dashboard.html
-```
-
-!!! danger "No abrir el .html directo"
-    Abrirlo con doble click lo carga con protocolo `file://`, lo que puede
-    causar comportamientos inconsistentes del navegador. Usá siempre la URL
-    `http://localhost:8000/...` servida por `http.server`.
+Si conecta bien a CarMaker, el indicador de estado arriba a la derecha
+muestra **"● en vivo"**. Si no pudo conectar, arranca en modo demo
+(ver sección 5).
 
 ---
 
-## 3. Uso del dashboard
+## 4. Uso de la app
 
 ### Pestaña "En vivo"
 
-KPIs y mini-gráficos en tiempo real:
+8 KPIs (velocidad, volante, gas, freno, vuelta actual, última vuelta, mejor
+vuelta, delta vs. mejor) + 6 mini-gráficos en tiempo real: velocidad,
+aceleración longitudinal y lateral, yaw rate, slip angle, volante.
 
-- Velocidad, aceleración longitudinal y lateral
-- Yaw rate y slip angle (para detectar sobre/subviraje)
-- Volante, gas y freno
-- Diagrama **G-G** (uso del círculo de fricción del auto)
-- Tiempo de sector, última vuelta, mejor vuelta y delta
+### Pestaña "Vueltas y Mapa"
+
+- **Selector de pista**: Autocross (5 vueltas) o Endurance (10 vueltas).
+- **Mapa del track** con la posición del auto en vivo (punto rojo) y una
+  estela de su recorrido reciente, más los marcadores de meta y de los 3
+  sectores.
+- **Tabla de vueltas**: sector 1/2/3, total y conos tocados de cada vuelta
+  completada, con la vuelta en curso resaltada en amarillo, y la mejor
+  vuelta marcada.
+- **Exportar CSV de vueltas** y **Borrar historial de vueltas**.
 
 ### Pestaña "Análisis"
 
-| Control | Qué hace |
-|---|---|
-| **Canales** | Elegís 2 o más para comparar, apilados con el mismo eje de tiempo |
-| **Ventana rápida** | 10s / 30s / 60s / Todo el historial grabado |
-| **Rango exacto** | Campos "desde → hasta" en segundos de simulación + botón Aplicar |
-| **● En vivo / ⏸ Pausado** | Alterna entre seguir el presente o congelar la vista. El historial se sigue grabando igual, aunque esté pausado |
-| **Slider** | Recorre manualmente el historial grabado (pausa automáticamente al moverlo) |
-| **Medir (A/B)** | Clickeás dos puntos en cualquier gráfico y te muestra el Δtiempo y el Δvalor exacto de cada canal entre esos dos instantes |
-| **Exportar CSV** | Descarga todo el historial grabado para analizar offline |
-| **Limpiar historial** | Borra el buffer grabado y reinicia mejor vuelta / delta |
-
-!!! note "En vivo después de pausar"
-    Al volver a "En vivo", el dashboard salta al **presente** — no reproduce
-    lo que pasó durante la pausa (igual que MoTeC i2 / AiM RaceStudio). Ese
-    tramo no se pierde: sigue en el historial grabado, así que podés
-    recuperarlo con el slider, con un rango exacto, o viendo "Todo".
+- **Canales**: checkboxes para elegir cuáles graficar (por defecto
+  Velocidad y Volante).
+- **Ventana**: 10s / 30s / 60s / Todo.
+- **● En vivo / ⏸ Pausado**: mismo comportamiento que la versión web — pausa
+  congela la vista sin dejar de grabar en segundo plano.
+- **Exportar CSV** de todo el historial grabado, y **Limpiar historial**.
 
 ---
 
-## 4. Troubleshooting
+## 5. Modo demo
 
-!!! failure "`ConnectionRefusedError` al correr `carmaker_bridge.py`"
-    El puerto TCP de CarMaker no está habilitado. Verificá que
-    `CMData.GuiArgs` se haya ejecutado **antes** de abrir CarMaker GUI
-    (sección 1.2).
+Si `pycarmaker` no está instalado, o no se puede conectar al puerto TCP de
+CarMaker, la app **arranca igual**, mostrando un aviso amarillo
+("MODO DEMO — no se pudo conectar a CarMaker, mostrando datos sintéticos")
+y generando una vuelta simulada en loop. Sirve para:
 
-!!! failure "`netstat -an | findstr 16660` no muestra nada"
-    El puerto nunca se abrió. Confirmá que corriste `cmenv` con la línea de
-    `CMData.GuiArgs` ya agregada, y que abriste CarMaker *después* de eso.
-
-!!! failure "Warning `Quantity 'X' invalida o sin datos`"
-    El nombre de esa variable no existe en tu proyecto. Revisá el nombre real
-    en `OutputQuantities` o en IPGControl, y corregilo en `QUANTITY_NAMES`
-    dentro de `carmaker_bridge.py`.
-
-!!! failure "Dashboard no conecta / gráficos vacíos"
-    Probablemente lo abriste con `file://` en vez de `http://`. Usá siempre
-    `http://localhost:8000/dashboard.html`.
-
-!!! failure "El eje de tiempo se ve raro (números repetidos)"
-    Pasa cuando la simulación se reinicia y `Time` retrocede. El dashboard ya
-    detecta este salto y limpia los gráficos automáticamente.
+- Probar/desarrollar la interfaz sin tener CarMaker corriendo.
+- Confirmar que la instalación de Python está bien, antes de meterse a
+  depurar la conexión real.
 
 ---
 
-## 5. Notas técnicas
+## 6. Cronometraje: cómo funciona por dentro
 
-- El bridge lee las variables a 20 Hz (`READ_HZ` en `carmaker_bridge.py`).
-- El buffer de historial en el navegador guarda hasta ~12.000 muestras
-  (~10 minutos a 20 Hz), configurable con `MAX_SAMPLES` en `dashboard.html`.
-- Todo el tráfico queda en `localhost`; no se expone nada fuera de la PC.
+La máquina de estados de `carmaker_core.py` resuelve varios casos reales que
+antes daban problemas en la versión web:
+
+- **Espera al arranque real**: no arma el cronómetro hasta que `Time`
+  efectivamente avanza (ignora el valor "congelado" que CarMaker deja antes
+  de darle Play).
+- **Pausa/Stop**: si `Time` se congela unas lecturas seguidas, vuelve a
+  "esperando" pero **conserva las vueltas ya completadas** — solo descarta
+  la vuelta/sector en curso.
+- **Corrida nueva**: si `Time` salta hacia atrás de golpe (más de 1
+  segundo), asume que es una corrida nueva desde el Test Manager y **borra
+  todo** el historial.
+- **Sector con respaldo**: si la quantity custom `current_sector` no
+  responde (el caso conocido de nuestro proyecto — ver
+  [Instalación de CarMaker](instalacioncarmaker.md)), calcula el sector
+  usando `Vhcl.sRoad` contra los límites de sector guardados en el JSON de
+  cada pista.
+
+---
+
+## 7. Troubleshooting
+
+!!! failure "La app arranca en modo demo aunque CarMaker esté corriendo"
+    Repasá la sección 2.2 — el puerto TCP no está habilitado. Confirmá con:
+    ```powershell
+    netstat -an | findstr 16660
+    ```
+
+!!! failure "`ModuleNotFoundError: No module named 'PyQt5'` (o pyqtgraph/pycarmaker)"
+    Corré `run_app.bat` (instala todo solo) o `pip install -r requirements.txt`
+    a mano.
+
+!!! failure "El mapa no muestra la posición del auto"
+    La app necesita las quantities `Car.tx` y `Car.ty`. Si tu proyecto usa
+    otros nombres, ajustalos en `_update_car_dot` dentro de `app.py`.
+
+!!! failure "Las vueltas no se guardan entre sesiones"
+    Confirmá que `cm_dashboard_state.json` esté en la misma carpeta que
+    `app.py` y que la app tenga permiso de escritura ahí.
+
+---
+
+## Ver también
+
+- [Implementación](index.md)
+- [Instalación de CarMaker](instalacioncarmaker.md)
+- [MATLAB / Simulink — Configuración](instalacionmatlab.md)
